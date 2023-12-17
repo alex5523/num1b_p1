@@ -5,8 +5,8 @@ grid.linestyle: --
 grid.linewidth: 1  # Set grid line width to 1
 
 # AXES
-axes.titlesize: 14
-axes.labelsize: 12
+axes.titlesize: 6
+axes.labelsize: 4
 axes.edgecolor: (0.1, 0.1, 0.1)
 axes.labelcolor: (0, 0.27, 0.72)
 axes.linewidth: 1
@@ -17,18 +17,18 @@ axes.spines.left: True
 axes.grid.which: both
 
 # TICKS
-xtick.labelsize: 12
+xtick.labelsize: 6
 xtick.color: (0.2, 0.2, 0.2)
 xtick.direction: in
 xtick.minor.visible: True
-ytick.labelsize: 12
+ytick.labelsize: 6
 ytick.color: (0.2, 0.2, 0.2)
 ytick.direction: in
 ytick.minor.visible: True
 
 # FIGURE OUTPUT
 figure.facecolor: (0.89, 0.93, 0.96)
-figure.figsize: 8.0, 8.0
+figure.figsize: 3.0, 3.0
 figure.dpi: 300
 savefig.dpi: 300
 
