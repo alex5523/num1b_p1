@@ -52,7 +52,7 @@ def ex1(x_init):
     # Visualize the solution
     x1_vals = np.linspace(-3, 3, 400)
     x2_vals = np.linspace(-3, 3, 400)
-    #plot_intersection(f1, J1, x_init, 'Intersection of a Circle and a Hyperbola', x1_vals, x2_vals)
+    plot_intersection(f1, J1, x_init, 'Intersection of a Circle and a Hyperbola', x1_vals, x2_vals)
 
     return
 
@@ -101,14 +101,14 @@ def ex2(x_init):
     # Visualise the solution
     x1_vals = np.linspace(-6, 6, 400)
     x2_vals = np.linspace(-3, 8, 400)
-    #plot_intersection(f2, J2, x_init, 'Intersection of Two Circles', x1_vals, x2_vals)       
+    plot_intersection(f2, J2, x_init, 'Intersection of Two Circles', x1_vals, x2_vals)       
     return
 
-x_init = [1.0, 1.0]
-ex2(x_init)
+#x_init = [1.0, 1.0]
+#ex2(x_init)
 
 # Example 3: Three intersecting spheres
-def ex3():
+def ex3(x_init):
     # Function
     def f3(x):
         m1 = [2.0, 0.0, -1.0]
@@ -132,12 +132,7 @@ def ex3():
         [2 * (x[0] - 1.0), 2 * (x[1] - 2.0), 2 * (x[2] - 0.0)],
         [2 * (x[0] - 0.0), 2 * (x[1] - 0.0), 2 * (x[2] - (-2.0))]
         ])
-    
-    # Initial guess
-    #x_init = [1.0, 0.0, -1.0]
-    x_init = [-1.0, 0.0, 1.0] # am schnellsten!
-    #x_init = [-1.0, 0.0, -1.0]
-    
+        
     # MYSOLVER
     x, k_end = newton_method1(f3, J3, x_init)
     
@@ -177,6 +172,7 @@ def ex4(x_init):
 
     # MYSOLVER
     x, k_end = newton_method1(f4, J4, x_init)
+    print(k_end)
 
     # FSOLVER
     sol = fsolve(f4, x_init)  # Löse nichtlineares Gleichungssystem    
@@ -191,8 +187,15 @@ def ex4(x_init):
     # Visualise the solution
     x1_vals = np.linspace(-6, 6, 400)
     x2_vals = np.linspace(-3, 8, 400)
-    plot_intersection(f4, J4, x_init, 'Intersection of Two Circles', x1_vals, x2_vals)       
+    plot_intersection(f4, J4, x_init, 'Two Circles not intersecting', x1_vals, x2_vals)       
     return
 
-x_init = [1.0, 0.0] 
-ex4(x_init)
+
+
+#x_init = [1.0, 0.0] 
+#ex4(x_init)
+
+# Initial guess
+#x_init = [1.0, 0.0, -1.0]
+#x_init = [-1.0, 0.0, 1.0] # am schnellsten!
+#x_init = [-1.0, 0.0, -1.0]
