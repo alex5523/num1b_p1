@@ -14,14 +14,13 @@ from num1a_p1_main import back_sub
 
 
 # MYSOLVER
-def newton_method1(f, J, x_init, tolerance = 1e-10, k_max=100):
+def newton_method1(f, J, x_init, tolerance=1e-10, k_max=100):
     
-    # Parameters/start initialisations
+    # Parameters/start initializations
     TOL_res = tolerance
     TOL_inc = tolerance
     x = np.array(x_init, dtype=float)
     k = 0   # count iterations
-    x_values = []
     
     # Dimension checks
     if np.ndim(x_init) == 1:
@@ -51,9 +50,31 @@ def newton_method1(f, J, x_init, tolerance = 1e-10, k_max=100):
             Q, R = qr(jacobian)
             inc = back_sub(R, Q.T @ -res)
         
-        
         # STOP Divergence check
-        if k >= 20 and np.linalg.norm(res[-2]) < np.linalg.norm(res[-1]) < np.linalg.norm(res[0]):
+        if x is not None and k >= 20 and np.linalg.norm(res[-2]) < np.linalg.norm(res[-1]) < np.linalg.norm(res[0]):
+            sol = fsolve(f, x[0, :])
+            raise ValueError(f"Newton method is diverging, breaking off at k = {k+1} with k_max = {k_max}, Estimated solution by fsolve:", sol)
+            
+        # STOP No solution or infinite solutions check
+        elif np.allclose(f(x), 0):
+            return x, k  # returns updated x value(s)
+        
+        # Update x within the loop
+        x += inc
+        k += 1
+    
+    # STOP Convergence check after the loop
+    if np.linalg.norm(inc) < TOL_inc and np.linalg.norm(res) < TOL_res:
+        return x, k  # returns updated x value(s)
+    
+    # If the loop completes without convergence, return None
+    return None, k_max
+        
+        
+"""
+mayve usefull error codes
+
+          
             try:
                 sol = fsolve(f, x_init)
                 raise ValueError(f"Newton method is diverging, breaking off at k = {k+1} with k_max = {k_max}, Estimated solution by fsolve:", sol)
@@ -70,19 +91,8 @@ def newton_method1(f, J, x_init, tolerance = 1e-10, k_max=100):
                 sol = fsolve(f, x_init)
             except RuntimeWarning as e:
                 print(f"fsolve raised a RuntimeWarning: {e}")
-        
-        # STOP Convergence check
-        if np.linalg.norm(inc) < TOL_inc and np.linalg.norm(res) < TOL_res:
-            return x + inc, k               # returns updated x value(s)
-        
-        x += inc
-        k += 1
-    
-    if np.allclose(f(x), 0):
-        return x, k  # returns updated x value(s)
-    else:
-        return None, k_max
-     
 
 
+
+"""
 
