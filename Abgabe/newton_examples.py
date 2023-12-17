@@ -39,14 +39,18 @@ def ex1(x_init):
     # MYSOLVER
     x, k_end = newton_method1(f1, J1, x_init)
     
-    # FSOLVER
-    sol = fsolve(f1, x_init)  # Löse nichtlineares Gleichungssystem
-    
     print("Example 1: Intersection of a circle and a hyperbola")
-    print("My Newton Method Solution:\n", x)
-    print("Number of Iterations:", k_end)
-    print("fsolve:\n", sol)
-    print("Mysolution = fsolve ? ", np.allclose(sol, x))
+    if x is not None:
+        sol = fsolve(f1, x_init)  # Löse nichtlineares Gleichungssystem
+        print("My Newton Method Solution:\n", x)
+        print("Number of Iterations:", k_end)
+        print("fsolve:\n", sol)
+        print("Mysolution = fsolve ? ", np.allclose(sol, x))
+    else:
+        print("No solution to this LSE!")
+        
+    
+
     
     # Visualize the solution
     x1_vals = np.linspace(-3, 3, 400)
@@ -85,17 +89,18 @@ def ex2(x_init):
     #x_init = [1.0, 4.0] # converges
 
     # MYSOLVER
-    x, k_end = newton_method1(f2, J2, x_init)
-
-    # FSOLVER
-    sol = fsolve(f2, x_init)  # Löse nichtlineares Gleichungssystem    
+    x, k_end = newton_method1(f2, J2, x_init)    
     
-    # Print statements
     print("Example 2: Two intersecting circles")
-    print("My Newton Method Solution:\n", x)
-    print("fsolve:\n", sol)
-    print("Mysolution = fsolve ? ", np.allclose(sol, x))
-    print("Number of Iterations:", k_end)
+    if x is not None:
+        sol = fsolve(f2, x_init)
+        print("My Newton Method Solution:\n", x)
+        print("fsolve:\n", sol)
+        print("Mysolution = fsolve ? ", np.allclose(sol, x))
+        print("Number of Iterations:", k_end)
+    else:
+        print("No solution to this LSE!")
+
 
     # Visualise the solution
     x1_vals = np.linspace(-6, 6, 400)
@@ -138,13 +143,15 @@ def ex3(x_init):
     # FSOLVER
     sol = fsolve(f3, x_init)  # Löse nichtlineares Gleichungssystem
     
-    # Print statements
     print("Example 3: Three intersecting spheres")
-    print("My Newton Method Solution:\n", x)
-    print("Number of Iterations:", k_end)
-    print("fsolve:\n", sol)
-    print("Mysolution = fsolve ? ", np.allclose(sol, x))
-    
+    if x is not None:
+        print("My Newton Method Solution:\n", x)
+        print("Number of Iterations:", k_end)
+        print("fsolve:\n", sol)
+        print("Mysolution = fsolve ? ", np.allclose(sol, x))
+    else:
+        print("No solution to this LSE!")
+
     return
 
 
@@ -156,7 +163,7 @@ def ex4(x_init):
     def f4(x):
         m1 = [0.0, 0.0]
         m2 = [0.0, 5.0]
-        r1 = 2
+        r1 = 1
         r2 = 2
         return np.array([(x[0] - m1[0])**2 + (x[1] - m1[1])**2 - r1**2,
                          (x[0] - m2[0])**2 + (x[1] - m2[1])**2 - r2**2])
@@ -176,17 +183,21 @@ def ex4(x_init):
     # FSOLVER
     sol = fsolve(f4, x_init)  # Löse nichtlineares Gleichungssystem    
     
-    # Print statements
+
     print("Example 4: Two non intersecting circles")
-    print("My Newton Method Solution:\n", x)
-    print("fsolve:\n", sol)
-    print("Mysolution = fsolve ? ", np.allclose(sol, x))
-    print("Number of Iterations:", k_end)
+    if x is not None:
+        print("My Newton Method Solution:\n", x)
+        print("fsolve:\n", sol)
+        print("Mysolution = fsolve ? ", np.allclose(sol, x))
+        print("Number of Iterations:", k_end)
+    else:
+        print(f"No solution to this LSE for k_max = {k_end}!")
+
 
     # Visualise the solution
     x1_vals = np.linspace(-6, 6, 400)
     x2_vals = np.linspace(-3, 8, 400)
-    plot_intersection(f4, J4, x_init, 'Two Circles not intersecting', x1_vals, x2_vals)       
+    #plot_intersection(f4, J4, x_init, 'Two Circles not intersecting', x1_vals, x2_vals)       
     return
 
 
