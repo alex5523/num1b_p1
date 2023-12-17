@@ -42,8 +42,7 @@ def ex1(x_init):
     # FSOLVER
     sol = fsolve(f1, x_init)  # Löse nichtlineares Gleichungssystem
     
-    print("Example 1: Intersection of a circle and a hyperbola", x)
-    print("x_init: ", x_init)
+    print("Example 1: Intersection of a circle and a hyperbola")
     print("My Newton Method Solution:\n", x)
     print("Number of Iterations:", k_end)
     print("fsolve:\n", sol)

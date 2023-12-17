@@ -20,6 +20,7 @@ def newton_method1(f, J, x_init, tolerance = 1e-10, k_max=100):
     TOL_inc = tolerance
     x = np.array(x_init, dtype=float)
     k = 0   # count iterations
+    x_values = []
     
     # Dimension checks
     if np.ndim(x_init) == 1:
@@ -30,7 +31,7 @@ def newton_method1(f, J, x_init, tolerance = 1e-10, k_max=100):
     if len(f(x)) != n_unknowns:
         raise ValueError("The number of equations must be equal to the number of unknowns.")
 
-    while k < k_max and (x < 1e6).any():
+    while k < k_max and np.all(x < 1e6):
         res = f(x)  # Residual
         
         jacobian = J(x)
@@ -57,6 +58,10 @@ def newton_method1(f, J, x_init, tolerance = 1e-10, k_max=100):
         
         # STOP Convergence check
         if np.linalg.norm(inc) < TOL_inc and np.linalg.norm(res) < TOL_res:
+            x_values.append(x)  # Assuming x is the current estimated value
+            if len(x_values) >= 3:
+                print("Last three points before convergence:\n", x_values[-3:], "\n")
+                
             return x + inc, k               # returns updated x value(s)
         
         x += inc
