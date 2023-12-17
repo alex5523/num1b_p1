@@ -8,7 +8,6 @@ Created on Sun Dec 17 12:26:50 2023
 import numpy as np
 import matplotlib.pyplot as plt
 from newton_more_variables import newton_method1
-#import newton_examples as ex
 
 # Plotting function
 def plot_intersection(f, J, x_init, title, x1_vals, x2_vals):
@@ -73,5 +72,5 @@ def plot_intersection(f, J, x_init, title, x1_vals, x2_vals):
     plt.axis('equal')
 
     resolution_value = 400
-    plt.savefig("intersection_plot.png", format="png", dpi=resolution_value)
+    #plt.savefig("intersection_plot.png", format="png", dpi=resolution_value)
     plt.show()

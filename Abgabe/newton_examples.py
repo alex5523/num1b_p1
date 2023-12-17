@@ -198,3 +198,66 @@ def ex4(x_init):
 #x_init = [1.0, 0.0, -1.0]
 #x_init = [-1.0, 0.0, 1.0] # am schnellsten!
 #x_init = [-1.0, 0.0, -1.0]
+
+
+# Example 5: Two intersecting lines in the plane
+def ex5(x_init):
+    
+    # Function
+    def f5(x):
+        return np.array([2*x[0] + 3*x[1] - 5,
+                         4*x[0] - x[1] + 2])
+
+    # Jacobian of function
+    def J5(x):
+        return np.array([[2*x[0], 3*x[1]],
+                         [4*x[0], -1*x[1]]])
+
+    # MYSOLVER
+    x, k_end = newton_method1(f5, J5, x_init)
+
+    # FSOLVER
+    sol = fsolve(f5, x_init)  # Löse nichtlineares Gleichungssystem
+    
+    # Print statements
+    print("Example 5: Two intersecting lines in the plane")
+    print("My Newton Method Solution:\n", x)
+    print("fsolve:\n", sol)
+    print("Mysolution = fsolve ? ", np.allclose(sol, x))
+    print("Number of Iterations:", k_end)
+
+    # Visualise the solution
+    x1_vals = np.linspace(-5, 5, 400)
+    x2_vals = np.linspace(-5, 5, 400)
+    plot_intersection(f5, J5, x_init, 'Intersection of Two Lines', x1_vals, x2_vals)       
+    return
+
+# Example 6: Three intersecting planes in space
+def ex6(x_init):
+    
+    # Function
+    def f6(x):
+        return np.array([2*x[0] + 3*x[1] - 4*x[2] - 7,
+                         x[0] - 2*x[1] + x[2] + 1,
+                         3*x[0] + x[1] - 2*x[2] - 5])
+
+    # Jacobian of function
+    def J6(x):
+        return np.array([[2*x[0], 3*x[1], -4*x[2]],
+                         [1*x[0], -2*x[1], 1*x[2]],
+                         [3*x[0], 1*x[1], -2*x[2]]])
+
+    # MYSOLVER
+    x, k_end = newton_method1(f6, J6, x_init)
+
+    # FSOLVER
+    sol = fsolve(f6, x_init)  # Löse nichtlineares Gleichungssystem
+    
+    # Print statements
+    print("Example 6: Three intersecting planes in space")
+    print("My Newton Method Solution:\n", x)
+    print("fsolve:\n", sol)
+    print("Mysolution = fsolve ? ", np.allclose(sol, x))
+    print("Number of Iterations:", k_end)
+
+    return

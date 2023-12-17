@@ -6,6 +6,7 @@ Created on Fri Dec 15 16:56:11 2023
 
 """
 import numpy as np
+import sys
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 from scipy.linalg import qr
@@ -42,7 +43,8 @@ def newton_method1(f, J, x_init, tolerance = 1e-10, k_max=100):
     
         else:
             # Check for singular Jacobian matrix
-            if np.linalg.det(jacobian) == 0:
+            condition_number = np.linalg.cond(jacobian, p=np.inf)
+            if condition_number > 1/sys.float_info.epsilon:
                 raise ValueError("Singular Jacobian matrix. Newton method may not converge.")
             
             # Solve linear system using QR decomposition and backwards substitution
@@ -68,8 +70,59 @@ def newton_method1(f, J, x_init, tolerance = 1e-10, k_max=100):
         k += 1
 
 
+
+
+
+"""
+funktioniert nicht :()
+
+def newton_method1(f, J, x_init, tolerance=1e-10, k_max=100):
+    # Parameters/start initializations
+    TOL_res = tolerance
+    TOL_inc = tolerance
+    x = np.array(x_init, dtype=float)
+    k = 0   # count iterations
+
+    # Dimension checks
+    if np.ndim(x) == 1:
+        n_unknowns = len(x)
+        x = np.reshape(x, (1, n_unknowns))  # 1D to 2D array, one row
+        
     else:
-        print(k)
-        raise ValueError(f"Newton method did not converge for k_max = {k_max}.")
+        raise ValueError("Initial guess must be a 1D array (vector).")
 
+    if len(f(x[0, :])) != n_unknowns:
+        raise ValueError("The number of equations must be equal to the number of unknowns.")
 
+    while k < k_max and (x < 1e6).any():
+        res = f(x)  # Residual
+        jacobian = J(x)
+
+        # Check if the Jacobian is one-dimensional
+        if jacobian.ndim == 1:
+            inc = -res / jacobian
+        else:
+            # Check for singular Jacobian matrix
+            if np.linalg.det(jacobian) == 0:
+                raise ValueError("Singular Jacobian matrix. Newton method may not converge.")
+
+            # Solve linear system using QR decomposition and backward substitution
+            Q, R = qr(jacobian)
+            inc = np.linalg.solve(R, Q.T @ -res)
+
+        # STOP Divergence check
+        if k >= 20 and np.linalg.norm(res[-2]) < np.linalg.norm(res[-1]) < np.linalg.norm(res[0]):
+            sol = fsolve(f, x[0, :])
+            raise ValueError(f"Newton method is diverging, breaking off at k = {k+1} with k_max = {k_max}, Estimated solution by fsolve:", sol)
+
+        # STOP Convergence check
+        if np.linalg.norm(inc) < TOL_inc and np.linalg.norm(res) < TOL_res:
+            x = x + inc
+            return x , k  # returns updated x value(s)
+
+        x += inc
+        k += 1
+
+    
+"""
+        
