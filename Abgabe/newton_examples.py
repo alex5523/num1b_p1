@@ -34,8 +34,6 @@ def ex1(x_init):
         return np.array([[2*x[0], 2*x[1]],
                          [2*x[0], -2*x[1]]])
     
-    # Initial guess
-    x_init = x_init
 
     # MYSOLVER
     x, k, k_end = newton_method1(f1, J1, x_init)
@@ -197,29 +195,9 @@ def ex4(x_init):
                          [2*x[0], 2*x[1] - 10]])
 
     # MYSOLVER
-    try:        
-        x, k, k_end = newton_method1(f4, J4, x_init)
-    except
-
-
-    print("Example 4: Two non intersecting circles")
-    if x is not None:
-        with warnings.catch_warnings(record=True) as w:
-            warnings.filterwarnings("error", category=RuntimeWarning)
-            try:
-                sol = fsolve(f4, x_init)
-            except RuntimeWarning as e:
-                print(f"fsolve raised a RuntimeWarning: {e}")
     
-        if not w:
-            print("My Newton Method Solution:\n", x)
-            print("fsolve:\n", sol)
-            print("Mysolution = fsolve ? ", np.allclose(np.abs(sol), np.abs(x)))
-            print("Number of Iterations:", k_end)
-        else:
-            print("Warning occurred during fsolve.")
-    else:
-        print(f"No solution to this LSE for k_max = {k_end}!")
+    print("Example 4: Two non intersecting circles")
+    result = newton_method1(f4, J4, x_init)
 
     # Visualise the solution
     #x1_vals = np.linspace(-6, 6, 400)

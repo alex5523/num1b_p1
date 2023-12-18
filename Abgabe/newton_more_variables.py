@@ -53,14 +53,15 @@ def newton_method1(f, J, x_init, tolerance=1e-10, k_max=100):
   
         # STOP Divergence check
         if x is not None and k >= 10 and np.linalg.norm(res[-2]) < np.linalg.norm(res[-1]) < np.linalg.norm(res[0]):
-            sol = fsolve(f, x)
-            return x, k, k_max
+            sol = fsolve(f, x)  # this might cause RuntimeError
+            #return x, k, k_max
             raise ValueError(f"Newton method is diverging, breaking off at k = {k+1} with k_max = {k_max}, Estimated solution by fsolve:", sol)
-            
+        
+        # Not working properly: 
         # STOP No solution or infinite solutions check
-        elif np.allclose(f(x), 0):
-            return x, k, k_max
-            raise ValueError(f"Newton method did not converge within {k_max} iterations.")
+        elif k > 2 and np.linalg.norm(inc[-2]) and np.linalg.norm(inc[-1]) > TOL_inc:
+            return None, k, k_max
+            #raise ValueError(f"Newton method did not converge within {k_max} iterations, k_iterations: {k}.")
         
         # Update x within the loop
         x += inc
@@ -68,7 +69,10 @@ def newton_method1(f, J, x_init, tolerance=1e-10, k_max=100):
     
     # STOP Convergence check after the loop
     if np.linalg.norm(inc) < TOL_inc and np.linalg.norm(res) < TOL_res:
-        return x, k, k_max  # returns updated x value(s)
+        return x, k, k_max
+    else:
+        print(f"Newton method did not converge within {k_max} iterations.")
+        return None
     
  
 
