@@ -7,6 +7,7 @@ Created on Fri Dec 15 16:56:11 2023
 """
 import numpy as np
 import sys
+import warnings
 from scipy.optimize import fsolve
 from scipy.linalg import qr
 from num1a_p1_main import back_sub
@@ -49,16 +50,17 @@ def newton_method1(f, J, x_init, tolerance=1e-10, k_max=100):
             Q, R = qr(jacobian)
             inc = back_sub(R, Q.T @ -res)
         
+  
         # STOP Divergence check
         if x is not None and k >= 10 and np.linalg.norm(res[-2]) < np.linalg.norm(res[-1]) < np.linalg.norm(res[0]):
-            for i in range(-2,1):
-                print("Last three residuals: ", res[i])
             sol = fsolve(f, x)
+            return x, k, k_max
             raise ValueError(f"Newton method is diverging, breaking off at k = {k+1} with k_max = {k_max}, Estimated solution by fsolve:", sol)
             
         # STOP No solution or infinite solutions check
         elif np.allclose(f(x), 0):
-            return x, k
+            return x, k, k_max
+            raise ValueError(f"Newton method did not converge within {k_max} iterations.")
         
         # Update x within the loop
         x += inc
@@ -66,7 +68,31 @@ def newton_method1(f, J, x_init, tolerance=1e-10, k_max=100):
     
     # STOP Convergence check after the loop
     if np.linalg.norm(inc) < TOL_inc and np.linalg.norm(res) < TOL_res:
-        return x, k  # returns updated x value(s)
+        return x, k, k_max  # returns updated x value(s)
     
-    return None, k_max
+ 
+
+
+
+"""
+
+
+    # If method runs till the end
+    #raise ValueError(f"Newton method did not converge within {k_max} iterations.")
+    #return None, k_max 
+
+            # Catch RuntimeWarning during fsolve
+            with warnings.catch_warnings():
+                warnings.filterwarnings("error", category=RuntimeWarning)
+                try:
+                    sol = fsolve(f, x)
+                except RuntimeWarning as e:
+                    print(f"fsolve raised a RuntimeWarning: {e}")
+                    # Handle the warning as needed
+    
+            raise ValueError(f"Newton method is diverging, breaking off at k = {k+1} with k_max = {k_max}, Estimated solution by fsolve:", sol)
+
+
+
+"""
         

@@ -7,6 +7,7 @@ Created on Sun Dec 17 12:27:07 2023
 """
 
 import numpy as np
+import warnings
 from newton_more_variables import newton_method1
 from scipy.optimize import fsolve
 from newton_plots import plot_intersection
@@ -37,21 +38,27 @@ def ex1(x_init):
     x_init = x_init
 
     # MYSOLVER
-    x, k_end = newton_method1(f1, J1, x_init)
+    x, k, k_end = newton_method1(f1, J1, x_init)
     
     print("Example 1: Intersection of a circle and a hyperbola")
     if x is not None:
-        sol = fsolve(f1, x_init)  # Löse nichtlineares Gleichungssystem
-        print("My Newton Method Solution:\n", x)
-        print("Number of Iterations:", k_end)
-        print("fsolve:\n", sol)
-        print("Mysolution = fsolve ? ", np.allclose(sol, x))
+        with warnings.catch_warnings(record=True) as w:
+            warnings.filterwarnings("error", category=RuntimeWarning)
+            try:
+                sol = fsolve(f1, x_init)
+            except RuntimeWarning as e:
+                print(f"fsolve raised a RuntimeWarning: {e}")
+    
+        if not w:
+            print("My Newton Method Solution:\n", x)
+            print("fsolve:\n", sol)
+            print("Mysolution = fsolve ? ", np.allclose(np.abs(sol), np.abs(x)))
+            print("Number of Iterations:", k_end)
+        else:
+            print("Warning occurred during fsolve.")
     else:
-        print("No solution to this LSE!")
+        print(f"No solution to this LSE for k_max = {k_end}!")
         
-    
-
-    
     # Visualize the solution
     x1_vals = np.linspace(-3, 3, 400)
     x2_vals = np.linspace(-3, 3, 400)
@@ -89,17 +96,26 @@ def ex2(x_init):
     #x_init = [1.0, 4.0] # converges
 
     # MYSOLVER
-    x, k_end = newton_method1(f2, J2, x_init)    
+    x, k, k_end = newton_method1(f2, J2, x_init)    
     
     print("Example 2: Two intersecting circles")
     if x is not None:
-        sol = fsolve(f2, x_init)
-        print("My Newton Method Solution:\n", x)
-        print("fsolve:\n", sol)
-        print("Mysolution = fsolve ? ", np.allclose(sol, x))
-        print("Number of Iterations:", k_end)
+        with warnings.catch_warnings(record=True) as w:
+            warnings.filterwarnings("error", category=RuntimeWarning)
+            try:
+                sol = fsolve(f2, x_init)
+            except RuntimeWarning as e:
+                print(f"fsolve raised a RuntimeWarning: {e}")
+    
+        if not w:
+            print("My Newton Method Solution:\n", x)
+            print("fsolve:\n", sol)
+            print("Mysolution = fsolve ? ", np.allclose(np.abs(sol), np.abs(x)))
+            print("Number of Iterations:", k_end)
+        else:
+            print("Warning occurred during fsolve.")
     else:
-        print("No solution to this LSE!")
+        print(f"No solution to this LSE for k_max = {k_end}!")
 
 
     # Visualise the solution
@@ -138,19 +154,26 @@ def ex3(x_init):
         ])
         
     # MYSOLVER
-    x, k_end = newton_method1(f3, J3, x_init)
-    
-    # FSOLVER
-    sol = fsolve(f3, x_init)  # Löse nichtlineares Gleichungssystem
+    x, k, k_end = newton_method1(f3, J3, x_init)
     
     print("Example 3: Three intersecting spheres")
     if x is not None:
-        print("My Newton Method Solution:\n", x)
-        print("Number of Iterations:", k_end)
-        print("fsolve:\n", sol)
-        print("Mysolution = fsolve ? ", np.allclose(sol, x))
+        with warnings.catch_warnings(record=True) as w:
+            warnings.filterwarnings("error", category=RuntimeWarning)
+            try:
+                sol = fsolve(f3, x_init)
+            except RuntimeWarning as e:
+                print(f"fsolve raised a RuntimeWarning: {e}")
+    
+        if not w:
+            print("My Newton Method Solution:\n", x)
+            print("fsolve:\n", sol)
+            print("Mysolution = fsolve ? ", np.allclose(np.abs(sol), np.abs(x)))
+            print("Number of Iterations:", k_end)
+        else:
+            print("Warning occurred during fsolve.")
     else:
-        print("No solution to this LSE!")
+        print(f"No solution to this LSE for k_max = {k_end}!")
 
     return
 
@@ -173,43 +196,40 @@ def ex4(x_init):
         return np.array([[2*x[0], 2*x[1]],
                          [2*x[0], 2*x[1] - 10]])
 
-    # Initial guess
-    #x_init = [1.0, 4.0] # converges
-
     # MYSOLVER
-    x, k_end = newton_method1(f4, J4, x_init)
-    print(k_end)
+    try:        
+        x, k, k_end = newton_method1(f4, J4, x_init)
+    except
 
-    # FSOLVER
-    sol = fsolve(f4, x_init)  # Löse nichtlineares Gleichungssystem    
-    
 
     print("Example 4: Two non intersecting circles")
     if x is not None:
-        print("My Newton Method Solution:\n", x)
-        print("fsolve:\n", sol)
-        print("Mysolution = fsolve ? ", np.allclose(sol, x))
-        print("Number of Iterations:", k_end)
+        with warnings.catch_warnings(record=True) as w:
+            warnings.filterwarnings("error", category=RuntimeWarning)
+            try:
+                sol = fsolve(f4, x_init)
+            except RuntimeWarning as e:
+                print(f"fsolve raised a RuntimeWarning: {e}")
+    
+        if not w:
+            print("My Newton Method Solution:\n", x)
+            print("fsolve:\n", sol)
+            print("Mysolution = fsolve ? ", np.allclose(np.abs(sol), np.abs(x)))
+            print("Number of Iterations:", k_end)
+        else:
+            print("Warning occurred during fsolve.")
     else:
         print(f"No solution to this LSE for k_max = {k_end}!")
 
-
     # Visualise the solution
-    x1_vals = np.linspace(-6, 6, 400)
-    x2_vals = np.linspace(-3, 8, 400)
+    #x1_vals = np.linspace(-6, 6, 400)
+    #x2_vals = np.linspace(-3, 8, 400)
     #plot_intersection(f4, J4, x_init, 'Two Circles not intersecting', x1_vals, x2_vals)    # does not handle the case of non intersection   
     return
 
 
-
-#x_init = [1.0, 0.0] 
-#ex4(x_init)
-
-# Initial guess
-#x_init = [1.0, 0.0, -1.0]
-#x_init = [-1.0, 0.0, 1.0] # am schnellsten!
-#x_init = [-1.0, 0.0, -1.0]
-
+x_init = [1.0, 0.0] 
+ex4(x_init)
 
 # Example 5: Two intersecting lines in the plane
 def ex5(x_init):
@@ -225,17 +245,24 @@ def ex5(x_init):
                          [4*x[0], -1*x[1]]])
 
     # MYSOLVER
-    x, k_end = newton_method1(f5, J5, x_init)
-
-    # FSOLVER
-    sol = fsolve(f5, x_init)  # Löse nichtlineares Gleichungssystem
+    x, k, k_end = newton_method1(f5, J5, x_init)
     
     print("Example 5: Two intersecting lines in the plane")
     if x is not None:
-        print("My Newton Method Solution:\n", x)
-        print("fsolve:\n", sol)
-        print("Mysolution = fsolve ? ", np.allclose(sol, x))
-        print("Number of Iterations:", k_end)
+        with warnings.catch_warnings(record=True) as w:
+            warnings.filterwarnings("error", category=RuntimeWarning)
+            try:
+                sol = fsolve(f5, x_init)
+            except RuntimeWarning as e:
+                print(f"fsolve raised a RuntimeWarning: {e}")
+    
+        if not w:
+            print("My Newton Method Solution:\n", x)
+            print("fsolve:\n", sol)
+            print("Mysolution = fsolve ? ", np.allclose(np.abs(sol), np.abs(x)))
+            print("Number of Iterations:", k_end)
+        else:
+            print("Warning occurred during fsolve.")
     else:
         print(f"No solution to this LSE for k_max = {k_end}!")
 
@@ -245,6 +272,9 @@ def ex5(x_init):
     x2_vals = np.linspace(-5, 5, 400)
     plot_intersection(f5, J5, x_init, 'Intersection of Two Lines', x1_vals, x2_vals)       
     return
+
+
+
 
 # Example 6: Three intersecting planes in space
 def ex6(x_init):
@@ -262,17 +292,24 @@ def ex6(x_init):
                          [3*x[0], 1*x[1], -2*x[2]]])
 
     # MYSOLVER
-    x, k_end = newton_method1(f6, J6, x_init)
-
-    # FSOLVER
-    sol = fsolve(f6, x_init)  # Löse nichtlineares Gleichungssystem
+    x, k, k_end = newton_method1(f6, J6, x_init)
     
     print("Example 6: Three intersecting planes in space")
     if x is not None:
-        print("My Newton Method Solution:\n", x)
-        print("fsolve:\n", sol)
-        print("Mysolution = fsolve ? ", np.allclose(sol, x))
-        print("Number of Iterations:", k_end)
+        with warnings.catch_warnings(record=True) as w:
+            warnings.filterwarnings("error", category=RuntimeWarning)
+            try:
+                sol = fsolve(f6, x_init)
+            except RuntimeWarning as e:
+                print(f"fsolve raised a RuntimeWarning: {e}")
+    
+        if not w:
+            print("My Newton Method Solution:\n", x)
+            print("fsolve:\n", sol)
+            print("Mysolution = fsolve ? ", np.allclose(np.abs(sol), np.abs(x)))
+            print("Number of Iterations:", k_end)
+        else:
+            print("Warning occurred during fsolve.")
     else:
         print(f"No solution to this LSE for k_max = {k_end}!")
 
