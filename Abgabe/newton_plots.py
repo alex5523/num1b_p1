@@ -31,7 +31,7 @@ def plot_intersection(f, J, x_init, title, x1_vals, x2_vals):
     plt.scatter(x_init[0], x_init[1], color='red', label='Initial Guess', s=3)
 
     # Solve using Newton's method
-    x, k, k_end = newton_method1(f, J, x_init)
+    x, k_end = newton_method1(f, J, x_init)
     
     # Plot the last three points before the intersection
     # for i in range(1, 4):
